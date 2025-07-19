@@ -1,21 +1,21 @@
 {
-  "name": "@token-ring/registry",
-  "version": "0.1.0",
-  "dependencies": {
-    "@token-ring/eslint-config": "0.0.0"
-  },
-  "devDependencies": {
-    "vitest": "^3.2.4"
-  },
-  "exports": {
-    ".": "./index.js",
-    "./*": "./*.js"
-  },
-  "private": true,
-  "scripts": {
-    "lint": "eslint ",
-    "test": "vitest run",
-    "eslint": "eslint --fix ./"
-  },
-  "type": "module"
+	"name": "@token-ring/registry",
+	"version": "0.1.0",
+	"dependencies": {
+		"@token-ring/eslint-config": "0.0.0"
+	},
+	"devDependencies": {
+		"vitest": "^3.2.4"
+	},
+	"exports": {
+		".": "./index.js",
+		"./*": "./*.js"
+	},
+	"private": true,
+	"scripts": {
+		"lint": "eslint ",
+		"test": "vitest run",
+		"eslint": "eslint --fix ./"
+	},
+	"type": "module"
 }

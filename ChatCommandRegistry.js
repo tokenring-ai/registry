@@ -50,4 +50,12 @@ export default class ChatCommandRegistry {
 	getCommands() {
 		return this.commands;
 	}
+
+	/**
+	 * Gets the names of all available commands.
+	 * @returns {string[]} An array of available command names.
+	 */
+	getAvailableCommandNames() {
+		return Object.keys(this.commands);
+	}
 }

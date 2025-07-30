@@ -1,7 +1,7 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import Registry from "../Registry.js";
-import Service from "../Service.js";
 import Resource from "../Resource.js";
+import Service from "../Service.js";
 
 // Mock service implementation for testing
 class TestService extends Service {

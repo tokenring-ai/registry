@@ -1,7 +1,7 @@
-import ResourceRegistry from "./ResourceRegistry.js";
-import ToolRegistry from "./ToolRegistry.js";
 import ChatCommandRegistry from "./ChatCommandRegistry.js";
+import ResourceRegistry from "./ResourceRegistry.js";
 import ServiceRegistry from "./ServiceRegistry.js";
+import ToolRegistry from "./ToolRegistry.js";
 
 /**
  * @typedef {Object} TokenRingPackage

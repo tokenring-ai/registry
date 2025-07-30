@@ -47,7 +47,7 @@ export default class ToolRegistry extends Service {
 	 * @param {TokenRingRegistry} registry - The registry instance
 	 * @returns {Promise<void>}
 	 */
-	async stop(registry) {
+	async stop(_registry) {
 		await this.disableTools(...this.activeToolNames);
 	}
 

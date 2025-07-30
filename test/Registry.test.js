@@ -44,19 +44,19 @@ const createTestPackage = (name) => ({
 	name: name,
 	version: "1.0.0",
 	description: `Test package ${name}`,
-	start: async (registry) => {},
-	stop: async (registry) => {},
+	start: async (_registry) => {},
+	stop: async (_registry) => {},
 	tools: {
 		[`${name}Tool`]: {
 			description: `Tool for ${name}`,
-			execute: async (params, registry) => `Executed ${name} tool`,
+			execute: async (_params, _registry) => `Executed ${name} tool`,
 			parameters: {},
 		},
 	},
 	chatCommands: {
 		[`${name}Command`]: {
 			description: `Command for ${name}`,
-			execute: async (params, registry) => `Executed ${name} command`,
+			execute: async (_params, _registry) => `Executed ${name} command`,
 		},
 	},
 });

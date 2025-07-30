@@ -23,7 +23,7 @@ export default class ResourceRegistry {
 	}
 
 	// noinspection JSUnusedLocalSymbols
-	async stop(registry) {
+	async stop(_registry) {
 		await this.disableResources(...this.activeResourceNames);
 	}
 

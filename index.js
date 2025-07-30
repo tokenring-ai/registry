@@ -1,6 +1,6 @@
-export { default as Service } from "./Service.js";
-export { default as Resource } from "./Resource.js";
 export { default as Registry } from "./Registry.js";
+export { default as Resource } from "./Resource.js";
+export { default as Service } from "./Service.js";
 
 export const name = "@token-ring/registry";
 export const description =

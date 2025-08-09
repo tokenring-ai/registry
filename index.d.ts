@@ -8,8 +8,8 @@ export class Service {
   start(registry: Registry): Promise<void>;
   stop(registry: Registry): Promise<void>;
   status(registry: Registry): Promise<any>;
-  getMemories?(registry: Registry): AsyncGenerator<any, any, any>;
-  getAttentionItems?(registry: Registry): AsyncGenerator<any, any, any>;
+  getMemories?(registry: Registry): AsyncGenerator<any>;
+  getAttentionItems?(registry: Registry): AsyncGenerator<any>;
 }
 
 export class Resource {

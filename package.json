@@ -2,20 +2,19 @@
 	"name": "@token-ring/registry",
 	"version": "0.1.0",
 	"dependencies": {
-		"@token-ring/eslint-config": "0.0.0"
 	},
 	"devDependencies": {
 		"vitest": "^3.2.4"
 	},
 	"exports": {
-		".": "./index.js",
-		"./*": "./*.js"
+		".": "./index.ts",
+		"./*": "./*.ts"
 	},
 	"license": "MIT",
 	"scripts": {
-		"lint": "eslint ",
-		"test": "vitest run",
-		"eslint": "eslint --fix ./"
+
+		"test": "vitest run"
+
 	},
 	"type": "module"
 }

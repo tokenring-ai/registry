@@ -1,8 +1,14 @@
-export const name: string;
-export const description: string;
-export const version: string;
+export { default as Registry } from "./Registry.ts";
+export { default as Resource } from "./Resource.ts";
+export { default as Service } from "./Service.ts";
 
-export class Service {
+export const name: string = "@token-ring/registry";
+export const description: string =
+	"Registry system for managing tools, resources, and resources";
+export const version: string = "0.1.0";
+
+
+declare class Service {
   name: string;
   description: string;
   start(registry: Registry): Promise<void>;
@@ -12,7 +18,7 @@ export class Service {
   getAttentionItems?(registry: Registry): AsyncGenerator<any>;
 }
 
-export class Resource {
+declare class Resource {
   name: string;
   description: string;
   constructor(params?: { name?: string; description?: string });
@@ -21,7 +27,7 @@ export class Resource {
   status(registry: Registry): Promise<any>;
 }
 
-export class Registry {
+declare class Registry {
   availablePackages: Set<any>;
   started: boolean;
   registry: any;
@@ -39,6 +45,6 @@ export class Registry {
   getPackageNames(): string[];
   getPackages(): any[];
 
-  getFirstServiceByType<T extends Service>(type: new () => T): T | undefined;
-  requireFirstServiceByType<T extends Service>(type: new () => T): T;
+  getFirstServiceByType<T extends Service>(type: abstract new (...args: any[]) => T): T | undefined;
+  requireFirstServiceByType<T extends Service>(type: abstract new (...args: any[]) => T): T;
 }

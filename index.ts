@@ -1,11 +1,11 @@
+import packageJSON from './package.json' with { type: 'json' };
+export const name = packageJSON.name;
+export const version = packageJSON.version;
+export const description = packageJSON.description;
+
 export { default as Registry } from "./Registry.ts";
 export { default as Resource } from "./Resource.ts";
 export { default as Service } from "./Service.ts";
-
-export const name: string = "@token-ring/registry";
-export const description: string =
-	"Registry system for managing tools, resources, and resources";
-export const version: string = "0.1.0";
 
 
 declare class Service {
@@ -30,7 +30,7 @@ declare class Resource {
 declare class Registry {
   availablePackages: Set<any>;
   started: boolean;
-  registry: any;
+  registry: Registry;
   services: any;
   resources: any;
   tools: any;

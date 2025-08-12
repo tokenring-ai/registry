@@ -1,6 +1,7 @@
 {
 	"name": "@token-ring/registry",
 	"version": "0.1.0",
+ "description": "Registry for Token Ring",
 	"dependencies": {
 	},
 	"devDependencies": {

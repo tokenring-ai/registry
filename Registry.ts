@@ -1,7 +1,7 @@
 import ChatCommandRegistry from "./ChatCommandRegistry.ts";
 import ResourceRegistry from "./ResourceRegistry.ts";
 import ServiceRegistry from "./ServiceRegistry.ts";
-import ToolRegistry from "./ToolRegistry.ts";
+import ToolRegistry, {TokenRingToolDefinition} from "./ToolRegistry.ts";
 
 export type TokenRingTool = import("./ToolRegistry.ts").TokenRingTool;
 export type TokenRingChatCommand = import("./ChatCommandRegistry.ts").TokenRingChatCommand;
@@ -13,7 +13,7 @@ export type TokenRingPackage = {
   description: string;
   start?: (registry: TokenRingRegistry) => Promise<void>;
   stop?: (registry: TokenRingRegistry) => Promise<void>;
-  tools?: Record<string, TokenRingTool>;
+  tools?: Record<string, TokenRingToolDefinition>;
   chatCommands?: Record<string, TokenRingChatCommand>;
   [key: string]: unknown;
 };
@@ -21,7 +21,6 @@ export type TokenRingPackage = {
 export default class TokenRingRegistry {
   availablePackages: Set<TokenRingPackage> = new Set();
   started: boolean = false;
-  registry: any = null;
 
   services: ServiceRegistry = new ServiceRegistry();
   resources: ResourceRegistry = new ResourceRegistry();
@@ -90,13 +89,13 @@ export default class TokenRingRegistry {
     return Array.from(this.availablePackages);
   }
 
-  getFirstServiceByType<T extends TokenRingService>(type: abstract new () => T): T | undefined {
-    return this.services.getServicesByType(type as any)?.[0] as T | undefined;
+  getFirstServiceByType<T extends TokenRingService>(type: abstract new (...args: any[]) => T): T | undefined {
+    return this.services.getServicesByType(type)?.[0];
   }
 
-  requireFirstServiceByType<T extends TokenRingService>(type: abstract new () => T): T {
-    const ret = this.services.getFirstServiceByType(type as any) as T | undefined;
-    if (!ret) throw new Error(`Cannot find a context of type: ${type.name ?? (type as any)}`);
+  requireFirstServiceByType<T extends TokenRingService>(type: abstract new (...args: any[]) => T): T {
+    const ret = this.services.getFirstServiceByType(type);
+    if (!ret) throw new Error(`Cannot find a context of type: ${type.name ?? type}`);
     return ret as T;
   }
 }

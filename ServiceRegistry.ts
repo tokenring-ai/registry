@@ -1,5 +1,3 @@
-import Service from "./Service.ts";
-
 export type TokenRingService = import("./Service.ts").default;
 export type TokenRingRegistry = import("./Registry.ts").default;
 
@@ -13,13 +11,13 @@ export default class ServiceRegistry {
     this.started = true;
 
     for (const service of this.availableServices) {
-      if ((service as any).start) await service.start(registry);
+      if (service.start) await service.start(registry);
     }
   }
 
   async stop(registry: TokenRingRegistry): Promise<void> {
     for (const service of this.availableServices) {
-      if ((service as any).stop) await service.stop(registry);
+      if (service.stop) await service.stop(registry);
     }
   }
 
@@ -49,23 +47,22 @@ export default class ServiceRegistry {
     return Array.from(this.availableServices);
   }
 
-  getServicesByType<T extends TokenRingService>(type: abstract new () => T): T[] {
-    return Array.from(this.availableServices).filter(
-      (service) => service instanceof (type as any),
-    ) as T[];
-  }
-
+    getServicesByType<T extends TokenRingService>(type: abstract new (...args: any[]) => T): T[] {
+        return Array.from(this.availableServices).filter(
+            (service) => service instanceof type
+        ) as T[];
+    }
   getServicesByName(name: string): TokenRingService[] {
     return Array.from(this.availableServices).filter(
       (service) => service.name === name,
     );
   }
 
-  getFirstServiceByType<T extends TokenRingService>(type: abstract new () => T): T | undefined {
+  getFirstServiceByType<T extends TokenRingService>(type: abstract new (...args: any[]) => T): T | undefined {
     return this.getServicesByType(type)?.[0];
   }
 
-  requireFirstServiceByType<T extends TokenRingService>(type: abstract new () => T): T {
+  requireFirstServiceByType<T extends TokenRingService>(type: abstract new (...args: any[]) => T): T {
     const ret = this.getFirstServiceByType(type);
     if (!ret) throw new Error(`Cannot find a service of type: ${type}`);
     return ret;
@@ -73,7 +70,7 @@ export default class ServiceRegistry {
 
   async *getMemories(): AsyncGenerator<any> {
     for (const service of this.getServices()) {
-      if ((service as any).getMemories) {
+      if (service.getMemories) {
         yield* service.getMemories(this.registry as TokenRingRegistry);
       }
     }
@@ -81,7 +78,7 @@ export default class ServiceRegistry {
 
   async *getAttentionItems(): AsyncGenerator<any> {
     for (const service of this.getServices()) {
-      if ((service as any).getAttentionItems) {
+      if (service.getAttentionItems) {
         yield* service.getAttentionItems(this.registry as TokenRingRegistry);
       }
     }

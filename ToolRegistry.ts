@@ -2,18 +2,20 @@ import Service from "./Service.ts";
 
 export type TokenRingRegistry = import("./Registry.ts").default;
 
-export type TokenRingTool = {
-  name: string;
-  packageName?: string;
-  description?: string;
-  execute?: (input: object, registry: TokenRingRegistry) => Promise<string>;
-  parameters?: import("zod").ZodTypeAny;
-  start?: (registry: TokenRingRegistry) => Promise<void>;
-  stop?: (registry: TokenRingRegistry) => Promise<void>;
-  // Optional lifecycle hooks invoked by runChat
-  afterChatComplete?: (registry: TokenRingRegistry) => Promise<void> | void;
-  afterTestingComplete?: (registry: TokenRingRegistry) => Promise<void> | void;
+export type TokenRingToolDefinition = {
+    description?: string;
+    execute?: (input: object, registry: TokenRingRegistry) => Promise<string|object>;
+    parameters?: import("zod").ZodTypeAny;
+    start?: (registry: TokenRingRegistry) => Promise<void>;
+    stop?: (registry: TokenRingRegistry) => Promise<void>;
+    // Optional lifecycle hooks invoked by runChat
+    afterChatComplete?: (registry: TokenRingRegistry) => Promise<void> | void;
+    afterTestingComplete?: (registry: TokenRingRegistry) => Promise<void> | void;
 };
+export type TokenRingTool = {
+    name: string;
+    packageName: string;
+} & TokenRingToolDefinition;
 
 export default class ToolRegistry extends Service {
   availableTools: Record<string, TokenRingTool> = {};

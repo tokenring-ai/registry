@@ -1,33 +1,31 @@
 // Base Service class in TypeScript
 // Keep .ts in import specifiers for NodeNext ESM compatibility
 
-export type MemoryItem = {
+import { Registry } from "@token-ring/registry";
+
+export type MemoryItemMessage = {
   role: string;
   content: string;
 };
 
-export type AttentionItem = {
+export type AttentionItemMessage = {
   role: string;
   content: string;
 };
-
-// The registry type is imported via the path with .ts specifier
-// TypeScript will resolve to .ts during build due to allowImportingTsExtensions
-export type TokenRingRegistry = import("./Registry.ts").default;
 
 export default class Service {
   name: string = "The Subclass should have set this";
   description: string = "The Subclass should have set this";
 
-  async start(_registry: TokenRingRegistry): Promise<void> {}
-  async stop(_registry: TokenRingRegistry): Promise<void> {}
+  async start(_registry: Registry): Promise<void> {}
+  async stop(_registry: Registry): Promise<void> {}
 
-  async status(_registry: TokenRingRegistry): Promise<any> {
+  async status(_registry: Registry): Promise<any> {
     throw new Error(`This service does not implement a status method.`);
   }
 
-  async *getMemories(_registry: TokenRingRegistry): AsyncGenerator<MemoryItem> {}
+  async *getMemories(_registry: Registry): AsyncGenerator<MemoryItemMessage> {}
   async *getAttentionItems(
-    _registry: TokenRingRegistry,
-  ): AsyncGenerator<AttentionItem> {}
+    _registry: Registry,
+  ): AsyncGenerator<AttentionItemMessage> {}
 }

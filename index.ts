@@ -6,6 +6,7 @@ export const description = packageJSON.description;
 export { default as Registry } from "./Registry.ts";
 export { default as Resource } from "./Resource.ts";
 export { default as Service } from "./Service.ts";
+export { default as ServiceRegistry } from "./ServiceRegistry.ts";
 
 
 declare class Service {

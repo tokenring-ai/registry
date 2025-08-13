@@ -1,4 +1,5 @@
-import packageJSON from './package.json' with { type: 'json' };
+import packageJSON from './package.json' with {type: 'json'};
+
 export const name = packageJSON.name;
 export const version = packageJSON.version;
 export const description = packageJSON.description;
@@ -7,6 +8,7 @@ export { default as Registry } from "./Registry.ts";
 export { default as Resource } from "./Resource.ts";
 export { default as Service } from "./Service.ts";
 export { default as ServiceRegistry } from "./ServiceRegistry.ts";
+export type { TokenRingPackage } from "./Registry.ts";
 
 
 declare class Service {

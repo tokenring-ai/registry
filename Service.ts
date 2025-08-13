@@ -1,7 +1,7 @@
 // Base Service class in TypeScript
 // Keep .ts in import specifiers for NodeNext ESM compatibility
 
-import { Registry } from "@token-ring/registry";
+import {Registry} from "@token-ring/registry";
 
 export type MemoryItemMessage = {
   role: string;

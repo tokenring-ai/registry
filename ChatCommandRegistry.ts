@@ -1,9 +1,9 @@
-export type TokenRingRegistry = import("./Registry.ts").default;
+import {Registry} from "./index.js";
 
 export type TokenRingChatCommand = {
   name?: string;
   description: string;
-  execute: (input: string, registry: TokenRingRegistry) => Promise<void | string> | void | string;
+  execute: (input: string, registry: Registry) => Promise<void | string> | void | string;
   help: () => string | string[];
   // allow arbitrary extras
   [key: string]: unknown;

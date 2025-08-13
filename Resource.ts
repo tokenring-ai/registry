@@ -1,6 +1,7 @@
 // Resource base class in TypeScript
 
-export type TokenRingRegistry = import("./Registry.ts").default;
+
+import {Registry} from "./index.js";
 
 export default class Resource {
   name!: string|undefined;
@@ -11,9 +12,9 @@ export default class Resource {
     this.description ??= description;
   }
 
-  async start(_registry: TokenRingRegistry): Promise<void> {}
-  async stop(_registry: TokenRingRegistry): Promise<void> {}
-  async status(_registry: TokenRingRegistry): Promise<any> {
+  async start(_registry: Registry): Promise<void> {}
+  async stop(_registry: Registry): Promise<void> {}
+  async status(_registry: Registry): Promise<any> {
     throw new Error(`This service does not implement a status method.`);
   }
 }

@@ -1,12 +1,13 @@
-export type TokenRingService = import("./Service.ts").default;
-export type TokenRingRegistry = import("./Registry.ts").default;
+import {Registry} from "./index.js";
+
+type TokenRingService = import("./Service.ts").default;
 
 export default class ServiceRegistry {
   availableServices: Set<TokenRingService> = new Set();
   started: boolean = false;
-  registry: TokenRingRegistry | null = null;
+  registry: Registry | null = null;
 
-  async start(registry: TokenRingRegistry): Promise<void> {
+  async start(registry: Registry): Promise<void> {
     this.registry = registry;
     this.started = true;
 
@@ -15,7 +16,7 @@ export default class ServiceRegistry {
     }
   }
 
-  async stop(registry: TokenRingRegistry): Promise<void> {
+  async stop(registry: Registry): Promise<void> {
     for (const service of this.availableServices) {
       if (service.stop) await service.stop(registry);
     }

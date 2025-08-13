@@ -62,9 +62,9 @@ const createTestPackage = (name) => ({
 });
 
 describe("Registry Integration Tests", () => {
- /**
-     * @type {Registry}
-     */
+	/**
+	 * @type {Registry}
+	 */
 	let registry;
 
 	beforeEach(() => {

@@ -1,16 +1,16 @@
 import Service from "./Service.ts";
+import {Registry} from "./index.js";
 
-export type TokenRingRegistry = import("./Registry.ts").default;
 
 export type TokenRingToolDefinition = {
     description?: string;
-    execute?: (input: object, registry: TokenRingRegistry) => Promise<string|object>;
+    execute?: (input: object, registry: Registry) => Promise<string|object>;
     parameters?: import("zod").ZodTypeAny;
-    start?: (registry: TokenRingRegistry) => Promise<void>;
-    stop?: (registry: TokenRingRegistry) => Promise<void>;
+    start?: (registry: Registry) => Promise<void>;
+    stop?: (registry: Registry) => Promise<void>;
     // Optional lifecycle hooks invoked by runChat
-    afterChatComplete?: (registry: TokenRingRegistry) => Promise<void> | void;
-    afterTestingComplete?: (registry: TokenRingRegistry) => Promise<void> | void;
+    afterChatComplete?: (registry: Registry) => Promise<void> | void;
+    afterTestingComplete?: (registry: Registry) => Promise<void> | void;
 };
 export type TokenRingTool = {
     name: string;
@@ -20,13 +20,13 @@ export type TokenRingTool = {
 export default class ToolRegistry extends Service {
   availableTools: Record<string, TokenRingTool> = {};
   activeToolNames: Set<string> = new Set();
-  registry: TokenRingRegistry | null = null;
+  registry: Registry | null = null;
 
-  async start(registry: TokenRingRegistry): Promise<void> {
+  async start(registry: Registry): Promise<void> {
     this.registry = registry;
   }
 
-  async stop(_registry: TokenRingRegistry): Promise<void> {
+  async stop(_registry: Registry): Promise<void> {
     await this.disableTools(...this.activeToolNames);
   }
 

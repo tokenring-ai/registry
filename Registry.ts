@@ -2,17 +2,17 @@ import ChatCommandRegistry from "./ChatCommandRegistry.ts";
 import ResourceRegistry from "./ResourceRegistry.ts";
 import ServiceRegistry from "./ServiceRegistry.ts";
 import ToolRegistry, {TokenRingToolDefinition} from "./ToolRegistry.ts";
+import {Registry} from "./index.js";
 
-export type TokenRingTool = import("./ToolRegistry.ts").TokenRingTool;
-export type TokenRingChatCommand = import("./ChatCommandRegistry.ts").TokenRingChatCommand;
-export type TokenRingService = import("./Service.ts").default;
+type TokenRingChatCommand = import("./ChatCommandRegistry.ts").TokenRingChatCommand;
+type TokenRingService = import("./Service.ts").default;
 
 export type TokenRingPackage = {
   name: string;
   version: string;
   description: string;
-  start?: (registry: TokenRingRegistry) => Promise<void>;
-  stop?: (registry: TokenRingRegistry) => Promise<void>;
+  start?: (registry: Registry) => Promise<void>;
+  stop?: (registry: Registry) => Promise<void>;
   tools?: Record<string, TokenRingToolDefinition>;
   chatCommands?: Record<string, TokenRingChatCommand>;
   [key: string]: unknown;

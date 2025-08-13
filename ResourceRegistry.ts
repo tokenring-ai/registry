@@ -1,16 +1,17 @@
-export type TokenRingResource = import("./Resource.ts").default;
-export type TokenRingRegistry = import("./Registry.ts").default;
+import {Registry} from "./index.js";
+
+type TokenRingResource = import("./Resource.ts").default;
 
 export default class ResourceRegistry {
   availableResources: Record<string, Set<TokenRingResource>> = {};
   activeResourceNames: Set<string> = new Set();
-  registry: TokenRingRegistry | null = null;
+  registry: Registry | null = null;
 
-  async start(registry: TokenRingRegistry): Promise<void> {
+  async start(registry: Registry): Promise<void> {
     this.registry = registry;
   }
 
-  async stop(_registry: TokenRingRegistry): Promise<void> {
+  async stop(_registry: Registry): Promise<void> {
     await this.disableResources(...this.activeResourceNames);
   }
 
@@ -103,7 +104,10 @@ export default class ResourceRegistry {
     return ret;
   }
 
-  getResourcesByType<T extends TokenRingResource>(type: new () => T): T[] {
+    getFirstResourceByType<T extends TokenRingResource>(type: abstract new (...args: any[]) => T): T | undefined {
+        return this.getResourcesByType(type)?.[0];
+    }
+  getResourcesByType<T extends TokenRingResource>(type: abstract new (...args: any[]) => T): T[] {
     const ret: T[] = [];
     for (const name of this.activeResourceNames) {
       for (const impl of this.availableResources[name] ?? []) {

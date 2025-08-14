@@ -72,7 +72,7 @@ export default class ServiceRegistry {
   async *getMemories(): AsyncGenerator<any> {
     for (const service of this.getServices()) {
       if (service.getMemories) {
-        yield* service.getMemories(this.registry as TokenRingRegistry);
+        yield* service.getMemories(this.registry as Registry);
       }
     }
   }
@@ -80,7 +80,7 @@ export default class ServiceRegistry {
   async *getAttentionItems(): AsyncGenerator<any> {
     for (const service of this.getServices()) {
       if (service.getAttentionItems) {
-        yield* service.getAttentionItems(this.registry as TokenRingRegistry);
+        yield* service.getAttentionItems(this.registry as Registry);
       }
     }
   }

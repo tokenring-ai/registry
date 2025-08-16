@@ -3,9 +3,10 @@ import Service from "./Service.ts";
 
 
 export type TokenRingToolDefinition = {
-  description?: string;
-  execute?: (input: object, registry: Registry) => Promise<string | object>;
-  parameters?: import("zod").ZodTypeAny;
+  name: string;
+  description: string;
+  execute: (input: object, registry: Registry) => Promise<string | object>;
+  parameters: import("zod").ZodTypeAny;
   start?: (registry: Registry) => Promise<void>;
   stop?: (registry: Registry) => Promise<void>;
   // Optional lifecycle hooks invoked by runChat
@@ -13,7 +14,6 @@ export type TokenRingToolDefinition = {
   afterTestingComplete?: (registry: Registry) => Promise<void> | void;
 };
 export type TokenRingTool = {
-  name: string;
   packageName: string;
 } & TokenRingToolDefinition;
 

@@ -60,7 +60,7 @@ export default class TokenRingRegistry {
         for (const toolName in pkg.tools) {
           await this.tools.addTool(toolName, {
             ...pkg.tools[toolName],
-            name: toolName,
+            //name: toolName,
             packageName: pkg.name,
           });
         }

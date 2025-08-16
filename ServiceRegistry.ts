@@ -48,11 +48,12 @@ export default class ServiceRegistry {
     return Array.from(this.availableServices);
   }
 
-    getServicesByType<T extends TokenRingService>(type: abstract new (...args: any[]) => T): T[] {
-        return Array.from(this.availableServices).filter(
-            (service) => service instanceof type
-        ) as T[];
-    }
+  getServicesByType<T extends TokenRingService>(type: abstract new (...args: any[]) => T): T[] {
+    return Array.from(this.availableServices).filter(
+      (service) => service instanceof type
+    ) as T[];
+  }
+
   getServicesByName(name: string): TokenRingService[] {
     return Array.from(this.availableServices).filter(
       (service) => service.name === name,
@@ -69,7 +70,7 @@ export default class ServiceRegistry {
     return ret;
   }
 
-  async *getMemories(): AsyncGenerator<any> {
+  async* getMemories(): AsyncGenerator<any> {
     for (const service of this.getServices()) {
       if (service.getMemories) {
         yield* service.getMemories(this.registry as Registry);
@@ -77,7 +78,7 @@ export default class ServiceRegistry {
     }
   }
 
-  async *getAttentionItems(): AsyncGenerator<any> {
+  async* getAttentionItems(): AsyncGenerator<any> {
     for (const service of this.getServices()) {
       if (service.getAttentionItems) {
         yield* service.getAttentionItems(this.registry as Registry);

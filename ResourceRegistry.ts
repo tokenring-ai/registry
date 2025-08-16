@@ -104,9 +104,10 @@ export default class ResourceRegistry {
     return ret;
   }
 
-    getFirstResourceByType<T extends TokenRingResource>(type: abstract new (...args: any[]) => T): T | undefined {
-        return this.getResourcesByType(type)?.[0];
-    }
+  getFirstResourceByType<T extends TokenRingResource>(type: abstract new (...args: any[]) => T): T | undefined {
+    return this.getResourcesByType(type)?.[0];
+  }
+
   getResourcesByType<T extends TokenRingResource>(type: abstract new (...args: any[]) => T): T[] {
     const ret: T[] = [];
     for (const name of this.activeResourceNames) {

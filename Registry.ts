@@ -1,8 +1,8 @@
 import ChatCommandRegistry from "./ChatCommandRegistry.ts";
+import {Registry} from "./index.js";
 import ResourceRegistry from "./ResourceRegistry.ts";
 import ServiceRegistry from "./ServiceRegistry.ts";
 import ToolRegistry, {TokenRingToolDefinition} from "./ToolRegistry.ts";
-import {Registry} from "./index.js";
 
 type TokenRingChatCommand = import("./ChatCommandRegistry.ts").TokenRingChatCommand;
 type TokenRingService = import("./Service.ts").default;

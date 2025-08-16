@@ -1,20 +1,20 @@
-import Service from "./Service.ts";
 import {Registry} from "./index.js";
+import Service from "./Service.ts";
 
 
 export type TokenRingToolDefinition = {
-    description?: string;
-    execute?: (input: object, registry: Registry) => Promise<string|object>;
-    parameters?: import("zod").ZodTypeAny;
-    start?: (registry: Registry) => Promise<void>;
-    stop?: (registry: Registry) => Promise<void>;
-    // Optional lifecycle hooks invoked by runChat
-    afterChatComplete?: (registry: Registry) => Promise<void> | void;
-    afterTestingComplete?: (registry: Registry) => Promise<void> | void;
+  description?: string;
+  execute?: (input: object, registry: Registry) => Promise<string | object>;
+  parameters?: import("zod").ZodTypeAny;
+  start?: (registry: Registry) => Promise<void>;
+  stop?: (registry: Registry) => Promise<void>;
+  // Optional lifecycle hooks invoked by runChat
+  afterChatComplete?: (registry: Registry) => Promise<void> | void;
+  afterTestingComplete?: (registry: Registry) => Promise<void> | void;
 };
 export type TokenRingTool = {
-    name: string;
-    packageName: string;
+  name: string;
+  packageName: string;
 } & TokenRingToolDefinition;
 
 export default class ToolRegistry extends Service {
@@ -100,7 +100,7 @@ export default class ToolRegistry extends Service {
     return Array.from(this.iterateActiveTools());
   }
 
-  *iterateActiveTools(): Generator<TokenRingTool, void, unknown> {
+  * iterateActiveTools(): Generator<TokenRingTool, void, unknown> {
     for (const name of this.activeToolNames) {
       const tool = this.availableTools[name];
       if (tool) yield tool;

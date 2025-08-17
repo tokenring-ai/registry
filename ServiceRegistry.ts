@@ -1,4 +1,5 @@
 import {Registry} from "./index.js";
+import {AttentionItemMessage, MemoryItemMessage} from "./Service.js";
 
 type TokenRingService = import("./Service.ts").default;
 
@@ -70,7 +71,7 @@ export default class ServiceRegistry {
     return ret;
   }
 
-  async* getMemories(): AsyncGenerator<any> {
+  async* getMemories(): AsyncGenerator<MemoryItemMessage> {
     for (const service of this.getServices()) {
       if (service.getMemories) {
         yield* service.getMemories(this.registry as Registry);
@@ -78,7 +79,7 @@ export default class ServiceRegistry {
     }
   }
 
-  async* getAttentionItems(): AsyncGenerator<any> {
+  async* getAttentionItems(): AsyncGenerator<AttentionItemMessage> {
     for (const service of this.getServices()) {
       if (service.getAttentionItems) {
         yield* service.getAttentionItems(this.registry as Registry);

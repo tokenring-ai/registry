@@ -11,6 +11,13 @@ export {default as ServiceRegistry} from "./ServiceRegistry.ts";
 export type {TokenRingPackage} from "./Registry.ts";
 
 
+import type { MemoryItemMessage, AttentionItemMessage } from "./Service.ts";
+import type { TokenRingPackage } from "./Registry.ts";
+import type ServiceRegistry from "./ServiceRegistry.ts";
+import type ResourceRegistry from "./ResourceRegistry.ts";
+import type ToolRegistry from "./ToolRegistry.ts";
+import type ChatCommandRegistry from "./ChatCommandRegistry.ts";
+
 declare class Service {
   name: string;
   description: string;
@@ -19,11 +26,11 @@ declare class Service {
 
   stop(registry: Registry): Promise<void>;
 
-  status(registry: Registry): Promise<any>;
+  status(registry: Registry): Promise<unknown>;
 
-  getMemories?(registry: Registry): AsyncGenerator<any>;
+  getMemories?(registry: Registry): AsyncGenerator<MemoryItemMessage>;
 
-  getAttentionItems?(registry: Registry): AsyncGenerator<any>;
+  getAttentionItems?(registry: Registry): AsyncGenerator<AttentionItemMessage>;
 }
 
 declare class Resource {
@@ -36,29 +43,29 @@ declare class Resource {
 
   stop(registry: Registry): Promise<void>;
 
-  status(registry: Registry): Promise<any>;
+  status(registry: Registry): Promise<unknown>;
 }
 
 declare class Registry {
-  availablePackages: Set<any>;
+  availablePackages: Set<TokenRingPackage>;
   started: boolean;
   registry: Registry;
-  services: any;
-  resources: any;
-  tools: any;
-  chatCommands: any;
+  services: ServiceRegistry;
+  resources: ResourceRegistry;
+  tools: ToolRegistry;
+  chatCommands: ChatCommandRegistry;
 
   start(): Promise<void>;
 
   stop(): Promise<void>;
 
-  addPackages(...packages: any[]): Promise<void>;
+  addPackages(...packages: TokenRingPackage[]): Promise<void>;
 
-  removePackages(...packages: any[]): Promise<void>;
+  removePackages(...packages: TokenRingPackage[]): Promise<void>;
 
   getPackageNames(): string[];
 
-  getPackages(): any[];
+  getPackages(): TokenRingPackage[];
 
   getFirstServiceByType<T extends Service>(type: abstract new (...args: any[]) => T): T | undefined;
 

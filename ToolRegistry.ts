@@ -6,12 +6,9 @@ export type TokenRingToolDefinition = {
   name: string;
   description: string;
   execute: (input: object, registry: Registry) => Promise<string | object>;
-  parameters: import("zod").ZodTypeAny;
+  inputSchema: import("zod").ZodTypeAny;
   start?: (registry: Registry) => Promise<void>;
   stop?: (registry: Registry) => Promise<void>;
-  // Optional lifecycle hooks invoked by runChat
-  afterChatComplete?: (registry: Registry) => Promise<void> | void;
-  afterTestingComplete?: (registry: Registry) => Promise<void> | void;
 };
 export type TokenRingTool = {
   packageName: string;
@@ -30,12 +27,16 @@ export default class ToolRegistry extends Service {
     await this.disableTools(...this.activeToolNames);
   }
 
-  async addTool(name: string, definition: TokenRingTool): Promise<void> {
-    this.availableTools[name] = definition;
+  async addTool(definition: TokenRingTool): Promise<void> {
+    this.availableTools[definition.name] = definition;
   }
 
   async enableTools(...names: string[] | string[][]): Promise<void> {
     for (const name of (names as string[]).flat()) {
+      if (!this.availableTools[name]) {
+        throw new Error(`Tool ${name} not found`);
+      }
+
       if (!this.activeToolNames.has(name)) {
         this.activeToolNames.add(name);
         const tool = this.availableTools[name];
@@ -45,9 +46,9 @@ export default class ToolRegistry extends Service {
   }
 
   async disableTools(...names: string[] | string[][]): Promise<void> {
-    for (const name of (names as string[]).flat()) {
-      if (name === "root") {
-        throw new Error("Cannot deactivate root context");
+    for (const name of names.flat()) {
+      if (!this.availableTools[name]) {
+        throw new Error(`Tool ${name} not found`);
       }
       if (this.activeToolNames.has(name)) {
         this.activeToolNames.delete(name);
@@ -58,12 +59,13 @@ export default class ToolRegistry extends Service {
   }
 
   async setEnabledTools(...names: string[] | string[][]): Promise<void> {
+    const flatNames = names.flat();
     for (const name of this.activeToolNames) {
-      if (!(names as string[]).includes(name)) {
+      if (!flatNames.includes(name)) {
         await this.disableTools(name);
       }
     }
-    for (const name of names as string[]) {
+    for (const name of flatNames) {
       if (!this.activeToolNames.has(name)) {
         await this.enableTools(name);
       }

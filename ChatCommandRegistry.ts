@@ -14,8 +14,8 @@ export default class ChatCommandRegistry {
   description: string = "Provides a registry of chat commands that can be run";
   commands: Record<string, TokenRingChatCommand> = {};
 
-  async addCommand(name: string, {description, execute, help}: TokenRingChatCommand): Promise<void> {
-    this.commands[name] = {name, description, execute, help} as TokenRingChatCommand;
+  addCommand(name: string, {description, execute, help}: TokenRingChatCommand): void {
+    this.commands[name] = {name, description, execute, help};
   }
 
   removeCommand(name: string): boolean {

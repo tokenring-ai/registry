@@ -1,13 +1,16 @@
 # @token-ring/registry
 
-The @token-ring/registry package provides the core runtime registry used across the Token Ring ecosystem. It coordinates four key areas:
+The @token-ring/registry package provides the core runtime registry used across the Token Ring ecosystem. It coordinates
+four key areas:
 
 - Services: Long‑lived components with lifecycle hooks (start/stop/status, optional memory/attention streams).
 - Resources: Named, enable/disable‑able capabilities that can have multiple implementations per name.
-- Tools: Discrete, invokable actions (with optional Zod parameter schemas) that can be enabled/disabled and have lifecycle hooks.
+- Tools: Discrete, invokable actions (with optional Zod parameter schemas) that can be enabled/disabled and have
+  lifecycle hooks.
 - Chat Commands: Simple commands available to interactive chat UIs.
 
-On top of these, the Registry can load packages that declare tools and chat commands and expose optional start/stop hooks.
+On top of these, the Registry can load packages that declare tools and chat commands and expose optional start/stop
+hooks.
 
 ## Install
 
@@ -24,6 +27,7 @@ This package is part of the monorepo and is typically consumed by other Token Ri
 - ServiceRegistry: Manages Service instances.
 
 Additional internal types/classes used by Registry:
+
 - ResourceRegistry: Manages named resources and their enable/disable state (with wildcard support).
 - ToolRegistry: Manages tools and their enable/disable state.
 - ChatCommandRegistry: Manages chat commands.
@@ -33,7 +37,7 @@ See src files in this package for full type signatures.
 ## Quick start
 
 ```ts
-import { Registry, Service } from "@token-ring/registry";
+import {Registry, Service} from "@token-ring/registry";
 
 // 1) Create a registry
 const registry = new Registry();
@@ -42,9 +46,11 @@ const registry = new Registry();
 class MyService extends Service {
   name = "my-service";
   description = "Demo service";
+
   async start(registry: Registry) {
     // initialize connections/resources
   }
+
   async stop(_registry: Registry) {
     // cleanup
   }
@@ -59,8 +65,10 @@ await registry.tools.addTool("sayHello", {
     return `Hello, ${input.name}!`;
   },
   // optional Zod schema: parameters: z.object({ name: z.string() })
-  start: async (_reg) => {},
-  stop: async (_reg) => {},
+  start: async (_reg) => {
+  },
+  stop: async (_reg) => {
+  },
 });
 
 // 4) Enable a tool and start the registry
@@ -69,7 +77,7 @@ await registry.start();
 
 // 5) Invoke a tool (typically invoked by higher‑level orchestrators)
 const tool = registry.tools.getToolByName("sayHello");
-const result = await tool?.execute?.({ name: "World" }, registry);
+const result = await tool?.execute?.({name: "World"}, registry);
 console.log(result); // "Hello, World!"
 
 // 6) Shutdown
@@ -79,6 +87,7 @@ await registry.stop();
 ## Packages
 
 A Token Ring package can declare:
+
 - start(registry): optional async hook, invoked on registry.start().
 - stop(registry): optional async hook, invoked on registry.stop().
 - tools: a map of tool definitions.
@@ -100,7 +109,7 @@ const demoPkg = {
   tools: {
     greet: {
       description: "Greets",
-      async execute({ name }: { name: string }) {
+      async execute({name}: { name: string }) {
         return `Hi ${name}`;
       },
     },
@@ -122,25 +131,27 @@ await registry.addPackages(demoPkg);
 - Add: registry.services.addServices(serviceA, serviceB)
 - Remove: registry.services.removeServices(service)
 - Lookup:
-  - getServiceNames()
-  - getServicesByType(Class)
-  - getFirstServiceByType(Class)
-  - requireFirstServiceByType(Class) on Registry
-- Lifecycle: Services added before registry.start() are started when the registry starts; adding after start() will start them immediately.
+- getServiceNames()
+- getServicesByType(Class)
+- getFirstServiceByType(Class)
+- requireFirstServiceByType(Class) on Registry
+- Lifecycle: Services added before registry.start() are started when the registry starts; adding after start() will
+  start them immediately.
 
 ## Managing resources
 
-Resources are grouped under a name and can have multiple implementations per name. They are started/stopped when enabled/disabled.
+Resources are grouped under a name and can have multiple implementations per name. They are started/stopped when
+enabled/disabled.
 
 - Add implementations: registry.resources.addResource("fs", resourceImpl1, resourceImpl2)
 - Enable/disable by name: enableResources("fs"), disableResources("fs")
 - Wildcard enable/disable: enableResources("fs*"), disableResources("fs*")
 - Set full set: setEnabledResources("fs", "net")
 - Queries:
-  - getAvailableResourceNames()
-  - getEnabledResourceNames()
-  - getActiveResources()
-  - getResourcesByType(Class), getFirstResourceByType(Class)
+- getAvailableResourceNames()
+- getEnabledResourceNames()
+- getActiveResources()
+- getResourcesByType(Class), getFirstResourceByType(Class)
 
 ## Managing tools
 
@@ -151,6 +162,7 @@ Resources are grouped under a name and can have multiple implementations per nam
 - Lookup: getToolByName(name)
 
 Tool definition shape (see ToolRegistry.ts):
+
 - description?: string
 - execute?: (input, registry) => Promise<string|object> | string | object
 - parameters?: Zod schema (optional)
@@ -168,13 +180,14 @@ Tool definition shape (see ToolRegistry.ts):
 ## Registry lifecycle
 
 - start():
-  - Invokes package start hooks.
-  - Starts ServiceRegistry, ResourceRegistry, ToolRegistry.
+- Invokes package start hooks.
+- Starts ServiceRegistry, ResourceRegistry, ToolRegistry.
 - stop():
-  - Stops ServiceRegistry, ResourceRegistry, ToolRegistry.
-  - Invokes package stop hooks.
+- Stops ServiceRegistry, ResourceRegistry, ToolRegistry.
+- Invokes package stop hooks.
 
 Helpers:
+
 - addPackages(...pkgs), removePackages(...pkgs)
 - getPackageNames(), getPackages()
 - requireFirstServiceByType<T>(Class)

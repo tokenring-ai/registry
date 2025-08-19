@@ -1,4 +1,5 @@
 import ChatCommandRegistry from "./ChatCommandRegistry.ts";
+import HookRegistry, {HookConfig} from "./HookRegistry.ts";
 import {Registry} from "./index.js";
 import ResourceRegistry from "./ResourceRegistry.ts";
 import ServiceRegistry from "./ServiceRegistry.ts";
@@ -15,6 +16,7 @@ export type TokenRingPackage = {
   stop?: (registry: Registry) => Promise<void>;
   tools?: Record<string, TokenRingToolDefinition>;
   chatCommands?: Record<string, TokenRingChatCommand>;
+  hooks?: Record<string, Omit<Omit<HookConfig, "name">, "packageName">>;
   [key: string]: unknown;
 };
 
@@ -26,6 +28,7 @@ export default class TokenRingRegistry {
   resources: ResourceRegistry = new ResourceRegistry();
   tools: ToolRegistry = new ToolRegistry();
   chatCommands: ChatCommandRegistry = new ChatCommandRegistry();
+  hooks: HookRegistry = new HookRegistry();
 
   async start(): Promise<void> {
     for (const pkg of this.availablePackages) {
@@ -36,6 +39,7 @@ export default class TokenRingRegistry {
       this.services.start(this),
       this.resources.start(this),
       this.tools.start(this),
+      this.hooks.start(this),
     ]);
   }
 
@@ -44,6 +48,7 @@ export default class TokenRingRegistry {
       this.services.stop(this),
       this.resources.stop(this),
       this.tools.stop(this),
+      this.hooks.stop(this),
     ]);
 
     for (const pkg of this.availablePackages) {
@@ -58,9 +63,8 @@ export default class TokenRingRegistry {
 
       if (pkg.tools) {
         for (const toolName in pkg.tools) {
-          await this.tools.addTool(toolName, {
+          await this.tools.addTool({
             ...pkg.tools[toolName],
-            //name: toolName,
             packageName: pkg.name,
           });
         }
@@ -68,7 +72,17 @@ export default class TokenRingRegistry {
 
       if (pkg.chatCommands) {
         for (const commandName in pkg.chatCommands) {
-          await this.chatCommands.addCommand(commandName, pkg.chatCommands[commandName]);
+          this.chatCommands.addCommand(commandName, pkg.chatCommands[commandName]);
+        }
+      }
+
+      if (pkg.hooks) {
+        for (const name in pkg.hooks) {
+          this.hooks.registerHook({
+            name,
+            packageName: pkg.name,
+            ...pkg.hooks[name],
+          });
         }
       }
     }

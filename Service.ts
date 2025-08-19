@@ -4,12 +4,12 @@
 import {Registry} from "@token-ring/registry";
 
 export type MemoryItemMessage = {
-  role: string;
+  role: "user" | "system";
   content: string;
 };
 
 export type AttentionItemMessage = {
-  role: string;
+  role: "user" | "system";
   content: string;
 };
 

@@ -1,21 +1,19 @@
 {
-	"name": "@token-ring/registry",
-	"version": "0.1.0",
+ "name": "@token-ring/registry",
+ "version": "0.1.0",
  "description": "Registry for Token Ring",
-	"dependencies": {
-	},
-	"devDependencies": {
-		"vitest": "^3.2.4"
-	},
-	"exports": {
-		".": "./index.ts",
-		"./*": "./*.ts"
-	},
-	"license": "MIT",
-	"scripts": {
-
-		"test": "vitest run"
-
-	},
-	"type": "module"
+ "dependencies": {
+ },
+ "devDependencies": {
+  "vitest": "^3.2.4"
+ },
+ "exports": {
+  ".": "./index.ts",
+  "./*": "./*.ts"
+ },
+ "license": "MIT",
+ "scripts": {
+  "test": "vitest run"
+ },
+ "type": "module"
 }
